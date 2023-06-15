@@ -1,12 +1,12 @@
 const allowedCors = [
   'http://localhost:3000',
   'http://localhost:3001',
-//   'http://domainlyubov.students.nomoredomains.rocks',
-//   'https://domainlyubov.students.nomoredomains.rocks',
-//   'http://api.domainlyubov.students.nomoredomains.rocks',
-//   'https://api.domainlyubov.students.nomoredomains.rocks',
-//   'http://158.160.42.148',
-//   'https://158.160.42.148',
+  'http://fr.domainlyubov.students.nomoredomains.rocks',
+  'https://fr.domainlyubov.students.nomoredomains.rocks',
+  'http://domainnutfullina.students.nomoredomains.rocks',
+  'https://domainnutfullina.students.nomoredomains.rocks',
+  'http://51.250.74.50',
+  'https://51.250.74.50',
 ];
 
 const corsProcess = (req, res, next) => {

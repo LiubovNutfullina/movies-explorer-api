@@ -1,9 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const { ConflictRequestError } = require('../errors/ConflictRequestError');
-const { BadRequestError } = require('../errors/BadRequestError');
-const { NotFoundError } = require('../errors/NotFoundError');
+const { NotFoundErr } = require('../errors/NotFoundError');
 
 const { JWT_SECRET, NODE_ENV } = process.env;
 
@@ -23,17 +21,7 @@ const createUser = (req, res, next) => {
       name,
       email,
     }))
-    .catch((err) => {
-      if (err.code === 11000) {
-        next(new ConflictRequestError('Пользователь с этим e-mail уже существует'));
-        return;
-      }
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы неккоректные данные'));
-        return;
-      }
-      next();
-    });
+    .catch(next);
 };
 
 const getCurrentUser = (req, res, next) => {
@@ -42,7 +30,7 @@ const getCurrentUser = (req, res, next) => {
       if (user) {
         res.send(user);
       } else {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundErr('Пользователь не найден');
       }
     })
     .catch(next);
@@ -53,7 +41,7 @@ const updateUser = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundErr('Пользователь не найден');
       }
       res.send(user);
     })

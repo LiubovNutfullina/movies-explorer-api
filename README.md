@@ -12,6 +12,7 @@ https://github.com/LiubovNutfullina/movies-explorer-api
 IP 51.250.74.50
 
 Backend https://domainnutfullina.students.nomoredomains.rocks  
+Frontend https://fr.domainlyubov.students.nomoredomains.rocks  
 
 ## Используемые технологии  
 

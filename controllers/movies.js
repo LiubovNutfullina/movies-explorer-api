@@ -1,8 +1,7 @@
 const Movie = require('../models/movie');
 
-const { ForbiddenError } = require('../errors/ForbiddenError');
-const { NotFoundError } = require('../errors/NotFoundError');
-const { BadRequestError } = require('../errors/BadRequestError');
+const { ForbiddenErr } = require('../errors/ForbiddenError');
+const { NotFoundErr } = require('../errors/NotFoundError');
 
 const getMovies = (req, res, next) => {
   const owner = req.user._id;
@@ -44,23 +43,17 @@ const createMovie = (req, res, next) => {
   })
     .then((movie) => movie.populate('owner'))
     .then((movie) => res.status(201).send(movie))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы неккоректные данные'));
-        return;
-      }
-      next();
-    });
+    .catch(next);
 };
 
 const deleteMovie = (req, res, next) => {
   Movie.findById(req.params.movieId)
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError('Фильм не найден');
+        throw new NotFoundErr('Фильм не найден');
       }
       if (movie.owner._id.toString() !== req.user._id.toString()) {
-        throw new ForbiddenError('Вы можете удалить только сохраненный у себя фильм');
+        throw new ForbiddenErr('Вы можете удалить только сохраненный у себя фильм');
       }
       return movie.deleteOne()
         .then(() => res.send({ message: 'Карточка удалена' }));

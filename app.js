@@ -5,18 +5,22 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
+const helmet = require('helmet');
 const { corsProcess } = require('./middlewares/cors');
 const router = require('./routes');
-const errorHandler = require('./middlewares/errorHandler');
+const { errorHandler } = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { PORT, MONGODB } = require('./config');
 
-const { PORT = 3000 } = process.env;
 const app = express();
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb');
+mongoose.connect(MONGODB, {
+  useNewUrlParser: true,
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(helmet());
 
 app.use(corsProcess);
 app.use(requestLogger);
