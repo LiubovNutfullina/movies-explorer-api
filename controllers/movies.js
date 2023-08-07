@@ -6,8 +6,8 @@ const { NotFoundErr } = require('../errors/NotFoundError');
 const getMovies = (req, res, next) => {
   const owner = req.user._id;
   Movie.find({ owner })
-    .populate(['owner', 'user'])
-    .then((movies) => res.send(movies))
+    .populate([{ path: 'owner', model: 'user' }])
+    .then((cards) => res.send(cards))
     .catch(next);
 };
 
